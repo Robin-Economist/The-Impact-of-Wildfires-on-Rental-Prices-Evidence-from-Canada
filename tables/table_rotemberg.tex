@@ -1,0 +1,29 @@
+\begin{table}[htbp]
+  \caption{Rotemberg Weights by Pre-Fire Exposure Rank}
+  \label{tab:rotemberg}
+  \centering\small
+  \begin{threeparttable}
+  \begin{tabular}{lrrrr}
+    \toprule
+    City & $s_{WL,d}$ (\%) & $s_{WL,d}^2$ & $w_d^R$ (\%) & Cumulative (\%) \\
+    \midrule
+    Kamloops & 21.22 & 0.0450 & 43.97 & 43.97 \\
+    Vancouver & 17.36 & 0.0301 & 29.43 & 73.40 \\
+    Prince George & 9.97 & 0.0099 & 9.70 & 83.10 \\
+    Kelowna & 6.91 & 0.0048 & 4.67 & 87.77 \\
+    Quesnel & 6.75 & 0.0046 & 4.45 & 92.22 \\
+    Abbotsford - Mission & 4.98 & 0.0025 & 2.43 & 94.65 \\
+    Vernon & 4.18 & 0.0017 & 1.71 & 96.35 \\
+    Calgary & 2.57 & 0.0007 & 0.65 & 97.00 \\
+    Victoria & 2.57 & 0.0007 & 0.65 & 97.64 \\
+    Campbell River & 2.41 & 0.0006 & 0.57 & 98.21 \\
+    \addlinespace
+    \textit{All other cities (N=38)} & 21.06 & --- & 1.79 & 100.00 \\
+    \bottomrule
+  \end{tabular}
+  \begin{tablenotes}[flushleft]\footnotesize
+    \item \textit{Notes:} Rotemberg weights $w_d^R = s_{WL,d}^2 / \sum_{d'} s_{WL,d'}^2$ (\citealt{goldsmith2020}, Section~III.B). In this balanced panel with a single binary Post indicator, these weights equal the squared pre-fire migration share normalised to sum to one across the 43 exposed cities. Each weight measures city~$d$'s contribution to the overall identification of $\hat{\pi}$. Non-exposed cities ($s_{WL,d}=0$) have zero Rotemberg weight and serve as the comparison group, not as identifying variation.
+  \end{tablenotes}
+  \end{threeparttable}
+\end{table}
+

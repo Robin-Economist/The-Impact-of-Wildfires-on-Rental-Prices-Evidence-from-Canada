@@ -1,0 +1,26 @@
+\begin{table}[htbp]
+   \caption{\label{tab:channel_validation} Validation of the Migration Channel: Post-Fire Arrivals}
+   \bigskip
+   \centering
+   \begin{tabular}{lcc}
+      \toprule
+                                            & (1) Williams Lake & (2) Placebo Quesnel \\  
+      \midrule 
+      $s_{WL,d} \times \mathrm{PostFlow}$   & -95.8$^{***}$ &   \\   
+                                            & (8.94)        &   \\   
+      $s_{Q,d} \times \mathrm{PostFlow}$    &               & 30.6\\   
+                                            &               & (29.5)\\   
+       \\
+      Observations                          & 655           & 655\\  
+      R$^2$                                 & 0.965         & 0.981\\  
+      Within R$^2$                          & 0.117         & 0.016\\  
+      RMSE                                  & 2.84          & 2.45\\  
+       \\
+      Wave FE                               & $\checkmark$  & $\checkmark$\\   
+      Destination FE                        & $\checkmark$  & $\checkmark$\\   
+      \bottomrule
+   \end{tabular}
+   
+   \par \raggedright 
+   Dependent variable: observed annual migration arrivals from the origin city to each destination in the balanced rental-market sample. Column (1) uses Williams Lake as origin. Column (2) uses Quesnel as a placebo origin. The pre-fire wave is 2016/2017; post-fire waves are 2017/2018 through 2020/2021. Missing destination-wave rows are completed as zeros after the diagnostic check reported in the replication code. Standard errors clustered at the destination-city level.
+\end{table}

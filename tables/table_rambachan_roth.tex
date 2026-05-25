@@ -1,0 +1,32 @@
+\begin{table}[htbp]
+   \caption{\label{tab:rambachan_roth} Sensitivity to Parallel-Trend Violations: Rambachan--Roth Confidence Sets}
+   \bigskip
+   \centering\small
+   \begin{threeparttable}
+      \begin{tabular}{lcc}
+         \toprule
+         $\bar{M}$ & Point estimate & 95\% confidence set \\
+         \midrule
+      $0.0$ & $0.756$ & $[0.347,\ 1.165]$ \\
+      $0.5$ & ---     & $[-0.163,\ 1.926]$ \\
+      $1.0$ & ---     & $[-0.940,\ 2.804]$ \\
+      $1.5$ & ---     & $[-1.826,\ 3.715]$ \\
+         \bottomrule
+      \end{tabular}
+      \begin{tablenotes}\footnotesize
+         \item \textit{Notes:} Dependent variable: log monthly rent,
+           2-bedroom apartments, buildings $\geq 3$ units (CMHC).
+           Summary statistic: average effect over $k=1,\ldots,7$ post-fire
+           years ($\ell$-vector assigns zero weight to $k=0$ due to
+           partial-year timing). $\bar{M}=0$: point estimate and standard
+           95\% CI under exact parallel trends (event-study specification).
+           $\bar{M}>0$: uniformly valid 95\% confidence sets from the
+           C-LF method of \citealt{rambachan2023}, allowing post-treatment
+           violations up to $\bar{M}$ times the largest pre-treatment
+           deviation. Breakdown value $\bar{M}^{*}=
+0.38$: smallest $\bar{M}$ at which the
+           confidence set first includes zero. Panel: 131 cities,
+           2008--2024. Standard errors clustered at city level.
+      \end{tablenotes}
+   \end{threeparttable}
+\end{table}

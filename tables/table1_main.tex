@@ -1,0 +1,27 @@
+\begin{table}[htbp]
+   \caption{\label{tab:main_result} Effect of BC 2017 Wildfire Displacement on Canadian Rental Prices}
+   \bigskip
+   \centering
+   \begin{tabular}{lccccc}
+      \toprule
+                                             & (1) OLS & (2) Year FE & (3) City FE & (4) City+Year FE & (5) City trends \\  
+      \midrule 
+      Constant                               & 6.75$^{***}$ &               &               &               &   \\   
+                                             & (0.021)      &               &               &               &   \\   
+      $Z_{WL}$ (BC 2017)                     & 3.84$^{***}$ & 2.49$^{***}$  & 3.40$^{***}$  & 0.818$^{***}$ & 0.594$^{***}$\\   
+                                             & (1.05)       & (0.856)       & (0.848)       & (0.216)       & (0.175)\\   
+       \\
+      Observations                           & 2,225        & 2,225         & 2,225         & 2,225         & 2,225\\  
+      $R^2$                                  & 0.055        & 0.322         & 0.662         & 0.940         & 0.975\\  
+      Within $R^2$                           &              & 0.032         & 0.065         & 0.021         & 0.007\\  
+      RMSE                                   & 0.300        & 0.254         & 0.179         & 0.075         & 0.049\\  
+       \\
+      Year FE                                &              & $\checkmark$  &               & $\checkmark$  & $\checkmark$\\   
+      City FE                                &              &               & $\checkmark$  & $\checkmark$  & $\checkmark$\\   
+      REF\_DATE $\times $ name\_cancensus    &              &               &               &               & $\checkmark$\\   
+      \bottomrule
+   \end{tabular}
+   
+   \par \raggedright 
+   Dependent variable: log monthly rent, 2-bedroom apartments, buildings $\geq$ 3 units (CMHC). $Z_{WL}$: pre-fire observed migration shares from Williams Lake $\times$ Post$_{2017}$ (Goldsmith-Pinkham, Sorkin \& Swift 2020). Column (5) includes city-specific linear time trends. The results should be interpreted as reduced-form evidence consistent with a wildfire-induced housing demand shock. Standard errors clustered at the city level. Period: 2008--2024. *** $p<0.01$, ** $p<0.05$, * $p<0.10$.
+\end{table}

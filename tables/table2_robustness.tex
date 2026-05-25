@@ -1,0 +1,28 @@
+\begin{table}[htbp]
+   \caption{\label{tab:robustness_instrument} Robustness: Alternative Exposure Specifications}
+   \bigskip
+   \centering
+   \begin{tabular}{lccccc}
+      \toprule
+                                    & (1) Baseline & (2) FM only & (3) WL+FM & (4) Aggregated & (5) Unbalanced \\  
+      \midrule 
+      $Z_{WL}$ (BC 2017)            & 0.818$^{***}$ &                       & 0.835$^{***}$ &               & 0.828$^{***}$\\   
+                                    & (0.216)       &                       & (0.234)       &               & (0.218)\\   
+      $Z_{FM}$ (Fort McMurray 2016) &               & 0.055                 & -0.670        &               &   \\   
+                                    &               & (1.00)                & (0.813)       &               &   \\   
+      $\hat{Z}$ (agrégé)            &               &                       &               & 0.637$^{***}$ &   \\   
+                                    &               &                       &               & (0.169)       &   \\   
+       \\
+      Observations                  & 2,225         & 2,242                 & 2,242         & 2,242         & 2,382\\  
+      $R^2$                         & 0.940         & 0.948                 & 0.949         & 0.949         & 0.940\\  
+      Within $R^2$                  & 0.021         & $9.96\times 10^{-6}$  & 0.025         & 0.019         & 0.020\\  
+      RMSE                          & 0.075         & 0.069                 & 0.068         & 0.069         & 0.075\\  
+       \\
+      Year FE                       & $\checkmark$  & $\checkmark$          & $\checkmark$  & $\checkmark$  & $\checkmark$\\   
+      City FE                       & $\checkmark$  & $\checkmark$          & $\checkmark$  & $\checkmark$  & $\checkmark$\\   
+      \bottomrule
+   \end{tabular}
+   
+   \par \raggedright 
+   Dependent variable: log monthly rent, 2-bedroom apartments, buildings $\geq$ 3 units (CMHC). $Z_{WL}$: Williams Lake exposure index (observed pre-fire shares $\times$ Post$_{2017}$). $Z_{FM}$: Fort McMurray exposure index (gravity-predicted shares $\times$ Post$_{2016}$). Standard errors clustered at the city level. Period: 2008--2024. Column (1) uses the main panel of 131 cities ($N=2{,}225$). Columns (2)--(4) use the panel augmented with Fort McMurray destination cities ($N=2{,}242$). Column (5) uses the unbalanced panel ($N=2{,}382$). *** $p<0.01$, ** $p<0.05$, * $p<0.10$.
+\end{table}

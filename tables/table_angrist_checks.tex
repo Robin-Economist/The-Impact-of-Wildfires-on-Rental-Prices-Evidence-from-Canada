@@ -1,0 +1,32 @@
+
+\begin{table}[htbp]
+   \caption{\label{tab:angrist_checks} Robustness: COVID Truncation, Pre-Period Trends, and Distant Placebo}
+   \bigskip
+   \centering
+   \begin{tabular}{lccccc}
+      \toprule
+                         & Baseline      & Pre-COVID ($\leq$ 2019)  & Pre-period trends & Placebo Sudbury & Placebo Quesnel \\   
+                         & (1)           & (2)                      & (3)               & (4)             & (5)\\  
+      \midrule 
+      $Z_{WL}$ (BC 2017) & 0.818$^{***}$ & 0.544$^{***}$            & 1.06$^{***}$      &                 &   \\   
+                         & (0.216)       & (0.177)                  & (0.309)           &                 &   \\   
+      Z\_sudbury         &               &                          &                   & 0.548$^{***}$   &   \\   
+                         &               &                          &                   & (0.208)         &   \\   
+      Z\_quesnel         &               &                          &                   &                 & 0.682$^{*}$\\   
+                         &               &                          &                   &                 & (0.348)\\   
+       \\
+      Observations       & 2,225         & 1,572                    & 2,225             & 2,225           & 2,225\\  
+      $R^2$              & 0.940         & 0.962                    & 0.897             & 0.940           & 0.940\\  
+      Within $R^2$       & 0.021         & 0.015                    & 0.027             & 0.005           & 0.013\\  
+      RMSE               & 0.075         & 0.052                    & 0.086             & 0.076           & 0.076\\  
+       \\
+      Year FE            & $\checkmark$  & $\checkmark$             & $\checkmark$      & $\checkmark$    & $\checkmark$\\   
+      City FE            & $\checkmark$  & $\checkmark$             & $\checkmark$      & $\checkmark$    & $\checkmark$\\   
+      \bottomrule
+   \end{tabular}
+   
+   \par \raggedright 
+   Dependent variable: log monthly rent, two-bedroom apartments, buildings $\geq 3$ units (CMHC). Column~(1): baseline TWFE (2008--2024). Column~(2): sample truncated to 2019 to exclude COVID-era mobility shocks. Column~(3): log rent detrended using city-specific linear trends estimated on the pre-treatment period (2008--2016) only; city and year FEs included on detrended outcome. Column~(4): placebo origin Greater Sudbury (Ontario), ~5,000 km from Williams Lake; pre-fire 2016/2017 migration shares $\times$ Post$_{2017}$. Column~(5): placebo origin Quesnel (British Columbia), geographically proximate to WL. Standard errors clustered at the city level. *** $p<0.01$, ** $p<0.05$, * $p<0.10$.
+\end{table}
+
+

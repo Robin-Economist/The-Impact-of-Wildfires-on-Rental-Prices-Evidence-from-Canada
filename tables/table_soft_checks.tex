@@ -1,0 +1,30 @@
+\begin{table}[htbp]
+   \caption{\label{tab:soft_checks} Robustness: Soft Checks on Exposure Definition and Specificity}
+   \bigskip
+   \centering
+   \begin{tabular}{lcccc}
+      \toprule
+                                        & (1) Baseline & (2) Gravity OLS & (3) Gravity PPML & (4) Placebo Quesnel \\  
+      \midrule 
+      $Z_{WL}$ observed shares          & 0.818$^{***}$ &               &               &   \\   
+                                        & (0.216)       &               &               &   \\   
+      $Z_{WL}^{grav}$ gravity OLS       &               & 2.67$^{***}$  &               &   \\   
+                                        &               & (0.916)       &               &   \\   
+      $Z_{WL}^{grav,ppml}$ gravity PPML &               &               & 1.32$^{**}$   &   \\   
+                                        &               &               & (0.522)       &   \\   
+      $Z_{Quesnel}$ placebo shares      &               &               &               & 0.682$^{*}$\\   
+                                        &               &               &               & (0.348)\\   
+       \\
+      Observations                      & 2,225         & 2,225         & 2,225         & 2,225\\  
+      $R^2$                             & 0.940         & 0.941         & 0.940         & 0.940\\  
+      Within $R^2$                      & 0.021         & 0.027         & 0.016         & 0.013\\  
+      RMSE                              & 0.075         & 0.075         & 0.075         & 0.076\\  
+       \\
+      Year FE                           & $\checkmark$  & $\checkmark$  & $\checkmark$  & $\checkmark$\\   
+      City FE                           & $\checkmark$  & $\checkmark$  & $\checkmark$  & $\checkmark$\\   
+      \bottomrule
+   \end{tabular}
+   
+   \par \raggedright 
+   Dependent variable: log monthly rent, 2-bedroom apartments, buildings $\geq$ 3 units (CMHC). Column (1): baseline with observed pre-fire migration shares. Column (2): exposure index replaced by OLS log-linear gravity-predicted shares $\hat{s}_{WL,d}^{grav} \propto \text{Pop}_d / \text{dist}(WL,d)^{\hat{\beta}_1}$. Column (3): same shares predicted by Poisson Pseudo-Maximum Likelihood \citep{santossilva2006}, which handles zero flows and corrects heteroskedasticity in multiplicative gravity models. Column (4): placebo exposure index from Quesnel (BC) pre-fire migration shares $\times$ Post$_{2017}$ --- Quesnel did not burn in 2017. Standard errors clustered at the city level. Period: 2008--2024. *** $p<0.01$, ** $p<0.05$, * $p<0.10$.
+\end{table}

@@ -1,0 +1,31 @@
+\begin{table}[htbp]
+   \caption{\label{tab:robustness_identification} Robustness: Identification Checks}
+   \bigskip
+   \centering
+   \begin{tabular}{lcccccccc}
+      \toprule
+                                             & (1) Baseline & (2) City trends & (3) BC trend & (4) Prov. trends & (5) BC only & (6) Unbalanced & (7) WL+FM & (8) $t\geq 2018$ \\  
+      \midrule 
+      $Z_{WL}$ (BC 2017)                     & 0.818$^{***}$ & 0.594$^{***}$ & 0.261         & 0.298         & 0.144         & 0.828$^{***}$ & 0.835$^{***}$ &   \\   
+                                             & (0.216)       & (0.175)       & (0.214)       & (0.219)       & (0.260)       & (0.218)       & (0.234)       &   \\   
+      $Z_{FM}$ (Fort McMurray 2016)          &               &               &               &               &               &               & -0.670        &   \\   
+                                             &               &               &               &               &               &               & (0.813)       &   \\   
+      Z\_hat\_wl18                           &               &               &               &               &               &               &               & 0.873$^{***}$\\   
+                                             &               &               &               &               &               &               &               & (0.222)\\   
+       \\
+      Observations                           & 2,225         & 2,225         & 2,225         & 2,225         & 408           & 2,382         & 2,242         & 2,225\\  
+      $R^2$                                  & 0.940         & 0.975         & 0.943         & 0.949         & 0.918         & 0.940         & 0.949         & 0.941\\  
+      Within $R^2$                           & 0.021         & 0.007         & 0.002         & 0.003         & 0.002         & 0.020         & 0.025         & 0.023\\  
+      RMSE                                   & 0.075         & 0.049         & 0.074         & 0.070         & 0.081         & 0.075         & 0.068         & 0.075\\  
+       \\
+      Year FE                                & $\checkmark$  & $\checkmark$  & $\checkmark$  & $\checkmark$  & $\checkmark$  & $\checkmark$  & $\checkmark$  & $\checkmark$\\   
+      City FE                                & $\checkmark$  & $\checkmark$  & $\checkmark$  & $\checkmark$  & $\checkmark$  & $\checkmark$  & $\checkmark$  & $\checkmark$\\   
+      REF\_DATE $\times $ name\_cancensus    &               & $\checkmark$  &               &               &               &               &               & \\  
+      REF\_DATE $\times $ bc                 &               &               & $\checkmark$  &               &               &               &               & \\  
+      REF\_DATE $\times $ province           &               &               &               & $\checkmark$  &               &               &               & \\  
+      \bottomrule
+   \end{tabular}
+   
+   \par \raggedright 
+   Dependent variable: log monthly rent, 2-bedroom apartments, buildings $\geq$ 3 units (CMHC). $Z_{WL}$: pre-fire migration shares $\times$ Post$_{2017}$ (columns 1--7); $Z_{WL,18}$: pre-fire shares $\times$ Post$_{2018}$ (column 8). Column (8) addresses the partial-year overlap between the July 2017 wildfire and the October 2017 CMHC rent measurement. Standard errors clustered at the city level. Period: 2008--2024. *** $p<0.01$, ** $p<0.05$, * $p<0.10$.
+\end{table}
