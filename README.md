@@ -9,11 +9,11 @@ Does climate-induced displacement raise rental prices in receiving cities? This 
 
 ## Main Result
 
-Cities with stronger pre-fire migration ties to Williams Lake experienced higher rent growth after 2017. The baseline estimate (city and year fixed effects, 131 cities, 2008–2024) is β = 0.818 (p < 0.01). Results should be interpreted as reduced-form evidence consistent with a wildfire-induced housing demand shock. Pre-trend concerns documented in the paper preclude a causal interpretation.
+Cities with stronger pre-fire migration ties to Williams Lake experienced higher rent growth after 2017. The baseline estimate (city and year fixed effects, 131 cities, 2008–2024) is β = 0.818 (p < 0.01): a one-percentage-point increase in pre-fire migration share is associated with 0.818 log-point higher rent growth. Results should be interpreted as reduced-form evidence consistent with a wildfire-induced housing demand shock. Pre-trend concerns documented in the paper preclude a causal interpretation.
 
 ## Identification Strategy
 
-Bartik-style network exposure index motivated by Goldsmith-Pinkham, Sorkin & Swift (AER 2020):
+Bartik-style network exposure index motivated by Goldsmith-Pinkham, Sorkin, and Swift (AER 2020):
 
 Z_WL = share_wl × Post2017
 
@@ -25,7 +25,7 @@ where share_wl is the pre-fire (2016/2017) migration share from Williams Lake to
 - **Rental prices**: CMHC via Statistics Canada, Table 34-10-0133-01
 - **Coordinates**: CensusMapper API (Census 2021), supplemented manually
 
-Raw data files are not included in this repository due to Statistics Canada licensing restrictions. See the replication code for data access instructions.
+Raw data files are not included in this repository due to Statistics Canada licensing restrictions. See Part I of `replication_code.R` for data download instructions.
 
 ## Repository Contents
 
