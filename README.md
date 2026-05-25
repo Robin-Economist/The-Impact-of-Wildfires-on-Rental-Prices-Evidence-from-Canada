@@ -1,7 +1,7 @@
 # The Impact of Wildfires on Rental Prices: Evidence from Canada
 
 **Robin Masson** — Université Paris 1 Panthéon-Sorbonne, M2 Économie  
-Mémoire de recherche, 2025-2026
+Master's Research Thesis, 2025–2026
 
 ## Research Question
 
