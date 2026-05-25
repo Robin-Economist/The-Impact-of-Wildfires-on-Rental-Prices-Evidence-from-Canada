@@ -9,7 +9,7 @@ Does climate-induced displacement raise rental prices in receiving cities? This 
 
 ## Main Result
 
-Cities with stronger pre-fire migration ties to Williams Lake experienced higher rent growth after 2017. The baseline estimate (city and year fixed effects, 131 cities, 2008–2024) is β = 0.818 (p < 0.01). Results should be interpreted as reduced-form evidence consistent with a wildfire-induced housing demand shock; pre-trend concerns documented in the paper preclude a causal interpretation.
+Cities with stronger pre-fire migration ties to Williams Lake experienced higher rent growth after 2017. The baseline estimate (city and year fixed effects, 131 cities, 2008–2024) is β = 0.818 (p < 0.01). Results should be interpreted as reduced-form evidence consistent with a wildfire-induced housing demand shock. Pre-trend concerns documented in the paper preclude a causal interpretation.
 
 ## Identification Strategy
 
@@ -30,22 +30,14 @@ Raw data files are not included in this repository due to Statistics Canada lice
 ## Repository Contents
 
 ```
-MASSON_replication_code.R     # Full replication script (17 sections)
-FINALE-MT.tex                 # Master thesis LaTeX source
-MASSON_MASTER_THESIS.pdf      # Final submitted PDF
-References.bib                # Bibliography
-cities_exposure_arcgis.csv    # Exposure shares for spatial map
-processed/coords.rds          # City coordinates (CensusMapper + manual)
-export_arcgis.R               # Spatial export script
-make_exposure_map.R           # Map generation script
-defense.tex                   # Defense slides (LaTeX/Beamer)
-defense.pdf                   # Defense slides (PDF)
-figures/                      # All figures (PDF + PNG)
-tables/                       # All LaTeX tables
+replication_code.R          # Full replication script (17 sections)
+master_thesis.pdf           # Final submitted PDF
+city_migration_exposure.csv # City-level exposure shares for spatial map
+README.md
 ```
 
 ## Replication
 
-Set the working directory to this folder, ensure all packages listed in Part I of the script are installed, and run `MASSON_replication_code.R` sequentially. Raw data must be downloaded from Statistics Canada before running the script.
+Set the working directory to this folder, ensure all packages listed in Part I of the script are installed, and run `replication_code.R` sequentially. Raw data must be downloaded from Statistics Canada before running the script.
 
 **R packages required**: dplyr, stringr, tidyr, cancensus, sf, geosphere, fixest, ggplot2, ggrepel, scales, modelsummary, purrr, broom, rnaturalearth, rnaturalearthdata
