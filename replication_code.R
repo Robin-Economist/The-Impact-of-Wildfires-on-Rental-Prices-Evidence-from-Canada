@@ -2646,7 +2646,7 @@ ggsave("figures/fig_spatial_exposure.pdf", fig_d4,
 # Packages requis : rnaturalearth, rnaturalearthdata (chargés en PARTIE I).
 
 {
-  pts_map <- read.csv("cities_exposure_arcgis.csv", stringsAsFactors = FALSE)
+  pts_map <- read.csv("city_migration_exposure.csv", stringsAsFactors = FALSE)
 
   exposed_map     <- pts_map |> filter(exposure_label == "Exposed")
   non_exposed_map <- pts_map |> filter(exposure_label == "Non-exposed")

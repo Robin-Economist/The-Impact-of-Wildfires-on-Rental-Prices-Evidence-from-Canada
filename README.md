@@ -1,6 +1,6 @@
 # The Impact of Wildfires on Rental Prices: Evidence from Canada
 
-**Robin Masson** — Université Paris 1 Panthéon-Sorbonne, M2 Économie  
+**Robin Masson** — Université Paris 1 Panthéon-Sorbonne, M2 Development Economics  
 Master's Research Thesis, 2025–2026
 
 ## Research Question
