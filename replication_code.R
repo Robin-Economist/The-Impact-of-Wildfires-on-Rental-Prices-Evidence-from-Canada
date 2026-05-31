@@ -4293,3 +4293,144 @@ ggsave("figures/fig_heterogeneity_coefplot.pdf", p_het,
 ggsave("figures/fig_heterogeneity_coefplot.png", p_het,
        width = 9, height = 3.2, dpi = 300)
 cat("fig_heterogeneity_coefplot exported.\n")
+
+# =============================================================================
+# PARTIE XVIII -- DIAGNOSTIC POIDS TWFE (de Chaisemartin & D'Haultfoeuille 2020)
+# =============================================================================
+#
+# CONTEXTE :
+# Le post LinkedIn de Clément de Chaisemartin (mai 2026) attire l'attention sur
+# les poids potentiellement négatifs dans les estimateurs TWFE avec traitement
+# CONTINU (extension Callaway-Goodman-Bacon-Sant'Anna / CGBSA, 2024).
+#
+# QUESTION :
+# Le TWFE de la spécification baseline (rf_baseline) assigne-t-il des poids
+# négatifs à certaines ATTs ? Si oui, quelle proportion ?
+#
+# PERTINENCE POUR CE DESIGN :
+# - Z_hat_wl = share_wl × Post2017 est un traitement CONTINU en intensité
+# - Choc SIMULTANÉ : toutes les villes passent de D=0 à D=share_wl en 2017
+# - La préoccupation Goodman-Bacon (staggered timing) est adressée dans le
+#   footnote §4. La préoccupation CGBSA (hétérogénéité des ATTs par intensité)
+#   est structurellement limitée ici car l'intensité est fixe dans le temps
+#   (= 0 avant 2017, = share_wl après) → pas de variation intra-ville de D.
+#
+# HYPOTHÈSE A PRIORI :
+# Fraction de poids négatifs faible ou nulle, pour deux raisons :
+# (1) Choc simultané → pas d'"early adopters" qui servent de contrôle pour
+#     les "late adopters" — le canal principal des poids négatifs de GB (2021).
+# (2) Intensité fixe post-traitement → la variation exploitée est purement
+#     cross-sectionelle (Kamloops vs Vancouver vs non-exposé) ; dans ce cas,
+#     les poids du TWFE sont proportionnels à (D_d - D_bar)² × T_post, qui
+#     sont toujours positifs.
+# =============================================================================
+
+library(TwoWayFEWeights)
+
+# Données : retirer les 2 NA Leamington 2023-2024
+df_twfe_diag <- panel_balanced_wl %>%
+  filter(!is.na(log_rent), !is.na(Z_hat_wl))
+
+cat("\n=============================================================\n")
+cat("PARTIE XVIII — DIAGNOSTIC POIDS TWFE (TwoWayFEWeights)\n")
+cat("=============================================================\n")
+cat(sprintf("Panel : %d villes × %d années = %d observations\n",
+            length(unique(df_twfe_diag$name_cancensus)),
+            length(unique(df_twfe_diag$REF_DATE)),
+            nrow(df_twfe_diag)))
+cat(sprintf("Z_hat_wl : min = %.4f, max = %.4f, moy = %.4f\n",
+            min(df_twfe_diag$Z_hat_wl),
+            max(df_twfe_diag$Z_hat_wl),
+            mean(df_twfe_diag$Z_hat_wl)))
+cat(sprintf("Villes exposées (Z_hat_wl > 0 au moins 1 année) : %d\n",
+            df_twfe_diag %>%
+              filter(Z_hat_wl > 0) %>%
+              distinct(name_cancensus) %>%
+              nrow()))
+
+# --- Diagnostic principal ---
+# type = "feTR" : TWFE avec "treatment restriction" (spécification standard)
+# C'est l'équivalent de la décomposition de de Chaisemartin & D'Haultfoeuille
+# (2020, AER) pour traitements continus.
+cat("\n--- Calcul des poids TWFE (type = feTR) ---\n")
+twfe_w <- tryCatch(
+  twowayfeweights(
+    data = df_twfe_diag,
+    Y    = "log_rent",
+    G    = "name_cancensus",
+    T    = "REF_DATE",
+    D    = "Z_hat_wl",
+    type = "feTR"
+  ),
+  error = function(e) {
+    cat("Erreur :", conditionMessage(e), "\n"); NULL
+  }
+)
+
+# --- Extraction et interprétation ---
+if (!is.null(twfe_w)) {
+
+  # Affichage du résumé natif du package
+  cat("\n--- Résumé du package TwoWayFEWeights ---\n")
+  print(summary(twfe_w))
+
+  # Calcul manuel à partir du vecteur de poids
+  w <- twfe_w$weights
+  n_tot <- length(w)
+  n_pos <- sum(w > 0, na.rm = TRUE)
+  n_neg <- sum(w < 0, na.rm = TRUE)
+  sum_pos <- sum(w[w > 0], na.rm = TRUE)
+  sum_neg <- sum(w[w < 0], na.rm = TRUE)   # valeur absolue = part "perturbatrice"
+
+  cat("\n=== RÉSULTATS NUMÉRIQUES ===\n")
+  cat(sprintf("Nombre d'ATTs estimés         : %d\n",    n_tot))
+  cat(sprintf("ATTs avec poids positif       : %d (%.1f%%)\n",
+              n_pos, 100 * n_pos / n_tot))
+  cat(sprintf("ATTs avec poids négatif       : %d (%.1f%%)\n",
+              n_neg, 100 * n_neg / n_tot))
+  cat(sprintf("Somme des poids positifs      : %.4f\n",  sum_pos))
+  cat(sprintf("Somme des poids négatifs (val abs) : %.4f\n", abs(sum_neg)))
+  cat(sprintf("Coefficient TWFE (rf_baseline): %.4f\n",
+              coef(rf_baseline)["Z_hat_wl"]))
+  cat(sprintf("Minimum de poids             : %.6f\n",  min(w, na.rm = TRUE)))
+  cat(sprintf("Maximum de poids             : %.6f\n",  max(w, na.rm = TRUE)))
+
+  # Seuils d'interprétation (de Chaisemartin & D'Haultfoeuille 2020 recommandent
+  # de comparer |sum(poids négatifs)| à la magnitude du coefficient)
+  ratio_neg <- abs(sum_neg) / abs(coef(rf_baseline)["Z_hat_wl"])
+
+  cat("\n=== INTERPRÉTATION ===\n")
+  if (n_neg == 0) {
+    cat(">> AUCUN poids négatif détecté.\n")
+    cat("   Le TWFE est une moyenne pondérée d'ATTs avec poids 100% positifs.\n")
+    cat("   La critique CGBSA (traitements continus) ne s'applique pas ici.\n")
+    cat("   Explication : choc simultané + intensité fixe post-2017 → les poids\n")
+    cat("   sont proportionnels à (D_d - D_bar)^2 × 1[post], tous ≥ 0.\n")
+    cat("   APPORT POUR LA SOUTENANCE : confirme le footnote §4 EMPIRIQUEMENT.\n")
+    cat("   Valeur : forte (1 ligne en réponse à la question sur CGBSA).\n")
+  } else if (ratio_neg < 0.05) {
+    cat(sprintf(">> Poids négatifs TRÈS FAIBLES (|sum_neg| / |beta| = %.3f < 5%%).\n",
+                ratio_neg))
+    cat("   Négligeable économiquement. Le TWFE reste interprétable.\n")
+    cat("   APPORT POUR LA SOUTENANCE : robustesse confirmée.\n")
+  } else if (ratio_neg < 0.20) {
+    cat(sprintf(">> Poids négatifs MODÉRÉS (|sum_neg| / |beta| = %.3f).\n", ratio_neg))
+    cat("   La non-linéarité des effets par intensité d'exposition est possible.\n")
+    cat("   Recommandation : mentionner comme limitation, non centrale.\n")
+  } else {
+    cat(sprintf(">> Poids négatifs IMPORTANTS (|sum_neg| / |beta| = %.3f).\n", ratio_neg))
+    cat("   Le TWFE mixe des effets positifs et négatifs de façon problématique.\n")
+    cat("   Recommandation : citer CGBSA et envisager un estimateur robuste.\n")
+  }
+}
+
+cat("\n=== CONCLUSION GÉNÉRALE ===\n")
+cat("Ce diagnostic répond à la question soulevée par le post LinkedIn de\n")
+cat("de Chaisemartin (mai 2026) sur les poids TWFE avec traitement continu.\n")
+cat("Il est DISTINCT de la critique Goodman-Bacon (staggered adoption) déjà\n")
+cat("couverte dans le footnote §4 du manuscrit.\n")
+cat("Valeur pour le mémoire : footnote additionnelle de 2 lignes, si les\n")
+cat("résultats confirment l'absence de poids négatifs.\n")
+cat("Valeur pour la soutenance : réponse directe si le jury cite CGBSA.\n")
+cat("Valeur pour un referee AER/RES : robustesse standard attendue (à ajouter\n")
+cat("dans une soumission future avec le package twowayfeweights cité).\n")
