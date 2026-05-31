@@ -30,35 +30,20 @@ Raw data files are not included in this repository due to Statistics Canada lice
 ## Repository Contents
 
 ```
-replication_code.R            # Full replication script (18 sections)
-twfe_diag.R                   # Standalone TWFE weight diagnostic (Appendix A.4a)
-master_thesis.pdf             # Final submitted PDF (updated June 2026)
-FINALE-MT.tex                 # LaTeX source
-References.bib                # Bibliography (33 entries)
-city_migration_exposure.csv   # City-level exposure shares for spatial map
-figures/fig_twfe_weights.pdf  # TWFE identification weights by city (Appendix A.4a)
+replication_code.R          # Full replication script (18 sections)
+master_thesis.pdf           # Final submitted PDF (updated June 2026)
+city_migration_exposure.csv # City-level exposure shares for spatial map
 README.md
 ```
 
 ## Updates — June 1, 2026
 
-Three additions made in the final pre-defense session:
+**PARTIE XVIII added to `replication_code.R`**: TWFE weight diagnostic addressing the de Chaisemartin & D'Haultfœuille (2020) negative-weight concern for continuous treatments. For `Z_WL = share_wl × Post2017`, the Frisch-Waugh-Lovell decomposition shows TWFE weights proportional to `(s_d − s̄)² × (Post_t − T_post/T)² ≥ 0` for all (d, t) — zero negative weights by construction. Kamloops and Vancouver together account for approximately 77% of the identifying variation.
 
-**1. Appendix A.4a — TWFE weights (new)**  
-New appendix section addressing the de Chaisemartin & D'Haultfœuille (2020) negative-weight concern for continuous treatments. For `Z_WL = share_wl × Post2017`, the Frisch-Waugh-Lovell decomposition shows TWFE weights proportional to `(s_d − s̄)² × (Post_t − T_post/T)² ≥ 0` for all (d, t): zero negative weights by construction. Kamloops and Vancouver together account for approximately 77% of the identifying variation.
-
-**2. PARTIE XVIII added to `replication_code.R`**  
-Numerical verification of the analytical TWFE weight result (lines 4297–4436).
-
-**3. `twfe_diag.R` — new standalone script**  
-Reproduces the TWFE diagnostic independently from the main replication script.
-
-Two corrections to the manuscript:
-- Table 16: LaTeX overflow fixed (213pt margin overrun resolved).
-- Table 11, col. (4): Coefficient corrected from 1.600 to 1.596 (verified against R: 1.596256).
+**PDF updated**: Two manuscript corrections — Table 16 margin overflow fixed; Table 11 col. (4) coefficient corrected from 1.600 to 1.596 (verified against R: 1.596256).
 
 ## Replication
 
-Set the working directory to this folder, ensure all packages listed in Part I of the script are installed, and run `replication_code.R` sequentially. Raw data must be downloaded from Statistics Canada before running the script. To replicate only the TWFE weight diagnostic, run `twfe_diag.R` as a standalone script.
+Set the working directory to this folder, ensure all packages listed in Part I of the script are installed, and run `replication_code.R` sequentially. Raw data must be downloaded from Statistics Canada before running the script.
 
 **R packages required**: dplyr, stringr, tidyr, cancensus, sf, geosphere, fixest, ggplot2, ggrepel, scales, modelsummary, purrr, broom, rnaturalearth, rnaturalearthdata, TwoWayFEWeights
