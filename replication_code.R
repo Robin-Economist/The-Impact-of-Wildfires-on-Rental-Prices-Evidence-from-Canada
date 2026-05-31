@@ -3585,89 +3585,88 @@ writeLines(tex_sc, "tables/table_soft_checks.tex")
 cat("table_soft_checks.tex exported.\n")
 
 # =============================================================================
-# PARTIE XIV -- INFÉRENCE HONNÊTE (RAMBACHAN-ROTH)   [MIS EN COMMENTAIRE]
-# Pour réactiver : sélectionner tout le bloc et décommenter (Ctrl+Shift+C).
+# PARTIE XIV -- INFÉRENCE HONNÊTE (RAMBACHAN-ROTH)
 # Temps d'exécution estimé : 3-5 minutes (bisection = 8 appels HonestDiD).
 # =============================================================================
-#
-# suppressPackageStartupMessages(library(HonestDiD))
-#
-# # --- XIV.1  Extraire betahat et sigma depuis es_wl_correct -------------------
-# all_coefs_rr <- coef(es_wl_correct)
-# all_vcov_rr  <- vcov(es_wl_correct)
-#
-# coef_k_rr    <- as.numeric(gsub(".*::(-?[0-9]+):.*", "\\1", names(all_coefs_rr)))
-# pre_order_rr  <- which(coef_k_rr < -1)[order(coef_k_rr[coef_k_rr < -1])]
-# post_order_rr <- which(coef_k_rr >= 0)[order(coef_k_rr[coef_k_rr >= 0])]
-# numPre_rr  <- length(pre_order_rr)
-# numPost_rr <- length(post_order_rr)
-#
-# betahat_rr <- c(all_coefs_rr[pre_order_rr], all_coefs_rr[post_order_rr])
-# sigma_rr   <- all_vcov_rr[c(pre_order_rr, post_order_rr),
-#                            c(pre_order_rr, post_order_rr)]
-# l_vec_rr <- c(0, rep(1/7, 7))
-#
-# # --- XIV.2  M-bar=0 : estimateur ponctuel et IC classique --------------------
-# sigma_post_rr <- sigma_rr[(numPre_rr+1):(numPre_rr+numPost_rr),
-#                            (numPre_rr+1):(numPre_rr+numPost_rr)]
-# est_m0_rr <- as.numeric(l_vec_rr %*% betahat_rr[(numPre_rr+1):(numPre_rr+numPost_rr)])
-# se_m0_rr  <- sqrt(as.numeric(t(l_vec_rr) %*% sigma_post_rr %*% l_vec_rr))
-# lb_m0_rr  <- est_m0_rr - 1.96 * se_m0_rr
-# ub_m0_rr  <- est_m0_rr + 1.96 * se_m0_rr
-#
-# # --- XIV.3  HonestDiD C-LF pour M-bar in {0.5, 1.0, 1.5} -------------------
-# rr_res_rr <- HonestDiD::createSensitivityResults_relativeMagnitudes(
-#   betahat        = betahat_rr,   sigma          = sigma_rr,
-#   numPrePeriods  = numPre_rr,    numPostPeriods = numPost_rr,
-#   Mbarvec        = c(0.5, 1.0, 1.5),
-#   l_vec          = l_vec_rr,     alpha          = 0.05)
-#
-# rr_table_rr <- rbind(
-#   data.frame(Mbar = 0.0, lb = lb_m0_rr,        ub = ub_m0_rr),
-#   data.frame(Mbar = 0.5, lb = rr_res_rr$lb[1], ub = rr_res_rr$ub[1]),
-#   data.frame(Mbar = 1.0, lb = rr_res_rr$lb[2], ub = rr_res_rr$ub[2]),
-#   data.frame(Mbar = 1.5, lb = rr_res_rr$lb[3], ub = rr_res_rr$ub[3]))
-#
-# # --- XIV.4  Valeur de rupture M* par bisection (5 itérations) ---------------
-# call_hd_rr <- function(Mbar) {
-#   res <- HonestDiD::createSensitivityResults_relativeMagnitudes(
-#     betahat        = betahat_rr,  sigma          = sigma_rr,
-#     numPrePeriods  = numPre_rr,   numPostPeriods = numPost_rr,
-#     Mbarvec        = Mbar,        l_vec          = l_vec_rr,  alpha = 0.05)
-#   res$lb
-# }
-# lo_rr <- 0; hi_rr <- 0.5
-# for (i_rr in 1:5) {
-#   mid_rr <- (lo_rr + hi_rr) / 2
-#   if (call_hd_rr(mid_rr) > 0) lo_rr <- mid_rr else hi_rr <- mid_rr
-# }
-# mstar_rr <- hi_rr
-#
-# # --- XIV.5  Export table_rambachan_roth.tex ----------------------------------
-# fmt_rr <- function(Mbar, lb, ub) {
-#   if (abs(Mbar) < 1e-9)
-#     sprintf("      $%.1f$ & $%.3f$ & $[%.3f,\\ %.3f]$ \\\\", Mbar, (lb+ub)/2, lb, ub)
-#   else
-#     sprintf("      $%.1f$ & ---     & $[%.3f,\\ %.3f]$ \\\\", Mbar, lb, ub)
-# }
-# rows_rr <- mapply(fmt_rr, rr_table_rr$Mbar, rr_table_rr$lb, rr_table_rr$ub)
-# tex_rr <- c(
-#   "\\begin{table}[htbp]",
-#   "   \\caption{\\label{tab:rambachan_roth} Sensitivity to Parallel-Trend Violations: Rambachan--Roth Confidence Sets}",
-#   "   \\bigskip", "   \\centering\\small", "   \\begin{threeparttable}",
-#   "      \\begin{tabular}{lcc}", "         \\toprule",
-#   "         $\\bar{M}$ & Point estimate & 95\\% confidence set \\\\",
-#   "         \\midrule", rows_rr, "         \\bottomrule",
-#   "      \\end{tabular}", "      \\begin{tablenotes}\\footnotesize",
-#   "         \\item \\textit{Notes:} C-LF method of \\citealt{rambachan2023}.",
-#   paste0("           Breakdown value $\\bar{M}^{*}=",
-#          sprintf("%.2f", mstar_rr), "$. Panel: 131 cities, 2008--2024."),
-#   "      \\end{tablenotes}", "   \\end{threeparttable}", "\\end{table}")
-# writeLines(tex_rr, "tables/table_rambachan_roth.tex")
-# saveRDS(list(rr_table = rr_table_rr, mstar = mstar_rr,
-#              betahat = betahat_rr, sigma = sigma_rr),
-#         "processed/rr_results.rds")
-# cat("Rambachan-Roth exporté.\n")
+
+suppressPackageStartupMessages(library(HonestDiD))
+
+# --- XIV.1  Extraire betahat et sigma depuis es_wl_correct -------------------
+all_coefs_rr <- coef(es_wl_correct)
+all_vcov_rr  <- vcov(es_wl_correct)
+
+coef_k_rr    <- as.numeric(gsub(".*::(-?[0-9]+):.*", "\\1", names(all_coefs_rr)))
+pre_order_rr  <- which(coef_k_rr < -1)[order(coef_k_rr[coef_k_rr < -1])]
+post_order_rr <- which(coef_k_rr >= 0)[order(coef_k_rr[coef_k_rr >= 0])]
+numPre_rr  <- length(pre_order_rr)
+numPost_rr <- length(post_order_rr)
+
+betahat_rr <- c(all_coefs_rr[pre_order_rr], all_coefs_rr[post_order_rr])
+sigma_rr   <- all_vcov_rr[c(pre_order_rr, post_order_rr),
+                           c(pre_order_rr, post_order_rr)]
+l_vec_rr <- c(0, rep(1/7, 7))
+
+# --- XIV.2  M-bar=0 : estimateur ponctuel et IC classique --------------------
+sigma_post_rr <- sigma_rr[(numPre_rr+1):(numPre_rr+numPost_rr),
+                           (numPre_rr+1):(numPre_rr+numPost_rr)]
+est_m0_rr <- as.numeric(l_vec_rr %*% betahat_rr[(numPre_rr+1):(numPre_rr+numPost_rr)])
+se_m0_rr  <- sqrt(as.numeric(t(l_vec_rr) %*% sigma_post_rr %*% l_vec_rr))
+lb_m0_rr  <- est_m0_rr - 1.96 * se_m0_rr
+ub_m0_rr  <- est_m0_rr + 1.96 * se_m0_rr
+
+# --- XIV.3  HonestDiD C-LF pour M-bar in {0.5, 1.0, 1.5} -------------------
+rr_res_rr <- HonestDiD::createSensitivityResults_relativeMagnitudes(
+  betahat        = betahat_rr,   sigma          = sigma_rr,
+  numPrePeriods  = numPre_rr,    numPostPeriods = numPost_rr,
+  Mbarvec        = c(0.5, 1.0, 1.5),
+  l_vec          = l_vec_rr,     alpha          = 0.05)
+
+rr_table_rr <- rbind(
+  data.frame(Mbar = 0.0, lb = lb_m0_rr,        ub = ub_m0_rr),
+  data.frame(Mbar = 0.5, lb = rr_res_rr$lb[1], ub = rr_res_rr$ub[1]),
+  data.frame(Mbar = 1.0, lb = rr_res_rr$lb[2], ub = rr_res_rr$ub[2]),
+  data.frame(Mbar = 1.5, lb = rr_res_rr$lb[3], ub = rr_res_rr$ub[3]))
+
+# --- XIV.4  Valeur de rupture M* par bisection (5 itérations) ---------------
+call_hd_rr <- function(Mbar) {
+  res <- HonestDiD::createSensitivityResults_relativeMagnitudes(
+    betahat        = betahat_rr,  sigma          = sigma_rr,
+    numPrePeriods  = numPre_rr,   numPostPeriods = numPost_rr,
+    Mbarvec        = Mbar,        l_vec          = l_vec_rr,  alpha = 0.05)
+  res$lb
+}
+lo_rr <- 0; hi_rr <- 0.5
+for (i_rr in 1:5) {
+  mid_rr <- (lo_rr + hi_rr) / 2
+  if (call_hd_rr(mid_rr) > 0) lo_rr <- mid_rr else hi_rr <- mid_rr
+}
+mstar_rr <- hi_rr
+
+# --- XIV.5  Export table_rambachan_roth.tex ----------------------------------
+fmt_rr <- function(Mbar, lb, ub) {
+  if (abs(Mbar) < 1e-9)
+    sprintf("      $%.1f$ & $%.3f$ & $[%.3f,\\ %.3f]$ \\\\", Mbar, (lb+ub)/2, lb, ub)
+  else
+    sprintf("      $%.1f$ & ---     & $[%.3f,\\ %.3f]$ \\\\", Mbar, lb, ub)
+}
+rows_rr <- mapply(fmt_rr, rr_table_rr$Mbar, rr_table_rr$lb, rr_table_rr$ub)
+tex_rr <- c(
+  "\\begin{table}[htbp]",
+  "   \\caption{\\label{tab:rambachan_roth} Sensitivity to Parallel-Trend Violations: Rambachan--Roth Confidence Sets}",
+  "   \\bigskip", "   \\centering\\small", "   \\begin{threeparttable}",
+  "      \\begin{tabular}{lcc}", "         \\toprule",
+  "         $\\bar{M}$ & Point estimate & 95\\% confidence set \\\\",
+  "         \\midrule", rows_rr, "         \\bottomrule",
+  "      \\end{tabular}", "      \\begin{tablenotes}\\footnotesize",
+  "         \\item \\textit{Notes:} C-LF method of \\citealt{rambachan2023}.",
+  paste0("           Breakdown value $\\bar{M}^{*}=",
+         sprintf("%.2f", mstar_rr), "$. Panel: 131 cities, 2008--2024."),
+  "      \\end{tablenotes}", "   \\end{threeparttable}", "\\end{table}")
+writeLines(tex_rr, "tables/table_rambachan_roth.tex")
+saveRDS(list(rr_table = rr_table_rr, mstar = mstar_rr,
+             betahat = betahat_rr, sigma = sigma_rr),
+        "processed/rr_results.rds")
+cat("Rambachan-Roth exporté.\n")
 
 # =============================================================================
 # PARTIE XV -- ABSORPTION RÉGIONALE (Section 7.4) + TIMING t>=2018 (Section 7.5)
