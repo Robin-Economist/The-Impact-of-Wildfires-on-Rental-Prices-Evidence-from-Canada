@@ -42,6 +42,8 @@ README.md
 
 **PDF updated**: Two manuscript corrections — Table 16 margin overflow fixed; Table 11 col. (4) coefficient corrected from 1.600 to 1.596 (verified against R: 1.596256).
 
+**Typesetting correction**: Removed `\enlargethispage{3\baselineskip}` in the Specification section. The directive extended the type area beyond `\textheight`, causing the clustering footnote (Adão, Kolesár, and Morales 2019) to overlap the page number on p. 17. Page layout from p. 18 onward is unaffected.
+
 ## Replication
 
 Set the working directory to this folder, ensure all packages listed in Part I of the script are installed, and run `replication_code.R` sequentially. Raw data must be downloaded from Statistics Canada before running the script.
