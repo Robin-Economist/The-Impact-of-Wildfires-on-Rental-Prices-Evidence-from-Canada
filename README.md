@@ -44,6 +44,8 @@ README.md
 
 **Typesetting correction**: Removed `\enlargethispage{3\baselineskip}` in the Specification section. The directive extended the type area beyond `\textheight`, causing the clustering footnote (Adão, Kolesár, and Morales 2019) to overlap the page number on p. 17. Page layout from p. 18 onward is unaffected.
 
+**Table layout**: The regional-absorption table (province-by-year and region-by-year fixed effects) was reset from landscape to portrait — five columns fit upright, removing a near-empty rotated page and shortening the document by two pages. Added a `\FloatBarrier` before the Robustness section so the placebo-diagnostics figure no longer floats above its section heading. Harmonized the notes of the COVID-truncation / distant-placebo table into the `threeparttable` block, matching the other regression tables.
+
 ## Replication
 
 Set the working directory to this folder, ensure all packages listed in Part I of the script are installed, and run `replication_code.R` sequentially. Raw data must be downloaded from Statistics Canada before running the script.
